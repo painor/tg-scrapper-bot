@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sonic Sniper Bot</title>
+    <link type="text/css" rel="stylesheet" href="/bootstrap/css/bootstrap.min.css"/>
+</head>
+<body>
+    <section class="container">
+        <div id="scanner" class="card mt-5">
+            <h5 class="card-header">Scanner</h5>
+            <div class="card-body">
+                <div class="form-group">
+                    <textarea class="form-control" rows="10" id="scanner-textarea" disabled></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div id="log" class="card mt-5">
+            <h5 class="card-header">Log</h5>
+            <div class="card-body">
+
+            </div>
+        </div>
+
+        <div id="running-trade" class="card mt-5">
+            <h5 class="card-header">Running Trade</h5>
+            <div class="card-body">
+                <table id="table-trades" class="table table-responsive table-bordered">
+                    <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Address | Poocoin</th>
+                        <th>SL | TP</th>
+                        <th>Current Price</th>
+                        <th>Amount Sell</th>
+                        <th>Gain</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+<!--                    <tr>-->
+<!--                        <td>1</td>-->
+<!--                        <td>test</td>-->
+<!--                        <td>test</td>-->
+<!--                        <td>test</td>-->
+<!--                        <td>test</td>-->
+<!--                        <td>test</td>-->
+<!--                        <td>test</td>-->
+<!--                        <td>-->
+<!--                            <button class="btn btn-sm btn-warning">-->
+<!--                                SELL-->
+<!--                            </button>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</body>
+<script></script>
+<script src="/jquery/jquery.min.js"></script>
+<script src="https://kit.fontawesome.com/e385d3aab7.js" crossorigin="anonymous"></script>
+<script src="/js/dist/telegram.js"></script>
+<script src="/js/dist/web3.min.js"></script>
+<script src="/js/client/clientHandle.js"></script>
+<script src="/js/core/settings.js"></script>
+<script src="/js/core/utils.js"></script>
+<script src="/js/core/telegramHandle.js"></script>
+
+<script>
+    $(document).ready(async function() {
+        //make connection
+        let x = await grab();
+        x.addEventHandler(getMessageEvent, new NewMessage({chats : [1618359068,1519789792,1747246894]})); //testing 1747246894
+       await connectToWeb3();
+        $.ajax({
+            type: 'GET',
+            url: '/trades',
+            success: (response) => {
+                // console.log(response);
+                response.data.forEach((val,key) => {
+                    console.log(val);
+                   addToTrades(val,key);
+                });
+            }
+        });
+    });
+
+    const addToTrades = (data,index) => {
+        let El = $('#table-trades > tbody');
+        El.append(`
+        <tr>
+                        <td>${index+1}</td>
+                        <td>${data.name}</td>
+                        <td>${data.ca}</td>
+                        <td>${data.stopLoss} | ${data.takingProfit}</td>
+                        <td>dinamis</td>
+                        <td>${data.amountSell}</td>
+                        <td>Gain</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning">
+                                SELL
+                            </button>
+                        </td>
+                    </tr>`)
+    }
+</script>
+</html>
