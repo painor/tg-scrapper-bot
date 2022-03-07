@@ -36,6 +36,7 @@ const getAllChats = async () => {
 const getMessageEvent = (event) => {
     let data = event.message;
     console.log(data);
+    Handler.appendScannerTextarea(data.text);
 }
 
 const grab = async () => {
@@ -43,14 +44,15 @@ const grab = async () => {
         Handler.appendScannerTextarea('Login with phone : '+phone_number+' ');
         client = new TelegramClient(stringSession, api_id, api_hash, { connectionRetries: 5 });
         await client.connect();
-        Handler.appendScannerTextarea('now you should be connected');
-        await client.getMe();
-        client.addEventHandler(getMessageEvent, new NewMessage({chats : [1618359068,1519789792,1747246894]})); //testing 1747246894
-    }catch(err){
+        const me = await client.getMe();
+        Handler.appendScannerTextarea('now you should be connected '+me.username);
+        client.addEventHandler(getMessageEvent, new NewMessage({chats: [-1001618359068,-1001519789792,-1001747246894]})); //testing 1747246894
+    } catch (err) {
         console.log(err);
         return false;
     }
-}
+    return client;
+};
 
 // module.exports = {
 //     authenticate,

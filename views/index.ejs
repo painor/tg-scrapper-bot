@@ -76,7 +76,6 @@
     $(document).ready(async function() {
         //make connection
         let x = await grab();
-        x.addEventHandler(getMessageEvent, new NewMessage({chats : [1618359068,1519789792,1747246894]})); //testing 1747246894
        await connectToWeb3();
         $.ajax({
             type: 'GET',
